@@ -1,0 +1,110 @@
+@layer base {
+  /* ---------- GLOBAL DEFAULTS ---------- */
+  html {
+    font-family: "Poppins", system-ui, -apple-system, sans-serif;
+    scroll-behavior: smooth; /* smooth scrolling for anchors */
+  }
+
+  body {
+    background-color: #ffffff;
+    color: #334155; /* slate-700: Better contrast than slate-600 */
+    line-height: 1.6; /* 1.75 is a bit loose; 1.6 is cleaner */
+    font-size: 1rem; /* approx 16px */
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased; /* Makes font look thinner and cleaner */
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Custom Text Selection Color (Premium feel) */
+  ::selection {
+    background-color: #e0e7ff; /* indigo-100 */
+    color: #3730a3; /* indigo-800 */
+  }
+
+  /* ---------- HEADINGS ---------- */
+  /* Modern Trend: Tighter letter spacing and line height for headings */
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #0f172a; /* slate-900 */
+    line-height: 1.2; /* Tighter than body text */
+  }
+
+  h1 {
+    font-size: 2.5rem; /* Explicit size helps (Tailwind text-4xl) */
+    font-weight: 800;  /* Extra bold pops more */
+    letter-spacing: -0.025em; /* Negative tracking for modern feel */
+    margin-bottom: 1.5rem;
+  }
+
+  h2 {
+    font-size: 2rem; /* Tailwind text-3xl */
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  h3 {
+    font-size: 1.5rem; /* Tailwind text-2xl */
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  h4 {
+    font-weight: 600;
+    color: #1e293b; /* slate-800 */
+  }
+
+  /* ---------- TEXT ELEMENTS ---------- */
+
+  p {
+    margin-bottom: 1.25rem; /* Consistent paragraph spacing */
+    color: #334155; /* slate-700 */
+  }
+
+  small {
+    color: #64748b; /* slate-500 */
+    font-size: 0.875rem;
+  }
+
+  strong, b {
+    font-weight: 600;
+    color: #0f172a; /* slate-900: Emphasized text should be darker */
+  }
+
+  /* ---------- LINKS (Major UX Upgrade) ---------- */
+
+  a {
+    color: #4f46e5; /* Indigo-600: A clear interactive color */
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s ease, text-decoration-color 0.2s ease;
+    border-bottom: 1px solid transparent; /* Prepare for hover */
+  }
+
+  a:hover {
+    color: #4338ca; /* Indigo-700 */
+    border-bottom-color: #4338ca; /* Underline appears on hover */
+  }
+
+  /* ---------- SECTION UTILITIES ---------- */
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .section-header h2 {
+    margin-bottom: 1rem;
+  }
+
+  .section-header p {
+    max-width: 42rem;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.125rem; /* Large text for intros */
+    color: #64748b; /* slate-500 */
+  }
+}
