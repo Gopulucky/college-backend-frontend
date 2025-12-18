@@ -1,31 +1,25 @@
 const jwt = require("jsonwebtoken");
-const { JWT_SECRET } = require("../config/jwt");
 
-function authenticate(req, res, next) {
-  const authHeader = req.headers.authorization;
+// 🟢 SAME KEY AS auth.js
+const JWT_SECRET = "acumen_secret_key_999";
 
-  console.log("AUTH HEADER:", authHeader); // DEBUG (remove later)
-
-  if (!authHeader) {
-    return res.status(401).json({ message: "No token provided" });
+const verifyToken = (req, res, next) => {
+  const tokenHeader = req.headers["authorization"];
+  
+  if (!tokenHeader) {
+    return res.status(403).json({ error: "No token provided" });
   }
 
-  const parts = authHeader.split(" ");
-  if (parts.length !== 2 || parts[0] !== "Bearer") {
-    return res.status(401).json({ message: "Malformed token" });
-  }
+  const token = tokenHeader.split(" ")[1]; // Remove "Bearer "
 
-  const token = parts[1];
-
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    console.log("DECODED TOKEN:", decoded); // DEBUG
-    req.user = decoded;
+  jwt.verify(token, JWT_SECRET, (err, decoded) => {
+    if (err) {
+      console.log("JWT ERROR:", err.message); // This is what you were seeing in the logs
+      return res.status(401).json({ error: "Unauthorized: Invalid Token" });
+    }
+    req.user = decoded; // Successfully decoded
     next();
-  } catch (err) {
-    console.error("JWT ERROR:", err.message);
-    return res.status(401).json({ message: "Invalid token" });
-  }
-}
+  });
+};
 
-module.exports = authenticate;
+module.exports = verifyToken;

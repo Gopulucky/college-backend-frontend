@@ -1,21 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../database/db");
-const verifyToken = require("../middleware/auth"); // your existing JWT middleware
+const verifyToken = require("../middleware/auth");
 
-/*
-JWT payload MUST contain:
-{
-  class_id: <number>,
-  class_code: <string>
-}
-*/
-
-// ===============================
 // GET MARKS FOR LOGGED-IN CLASS
-// ===============================
-router.get("/marks", verifyToken, (req, res) => {
-  const classId = req.user.class_id;
+router.get("/marks", verifyToken, async (req, res) => {
+  // 1. FIX: Use 'classId' (matches auth.js), not 'class_id'
+  const classId = req.user.classId; 
+
+  console.log("Fetching marks for Class ID:", classId); // Debugging log
 
   const sql = `
     SELECT
@@ -31,13 +24,14 @@ router.get("/marks", verifyToken, (req, res) => {
     ORDER BY rank_position ASC
   `;
 
-  db.query(sql, [classId], (err, results) => {
-    if (err) {
-      console.error("Class marks error:", err);
-      return res.status(500).json({ error: "Database error" });
-    }
+  try {
+    // 2. FIX: Use async/await instead of callback
+    const [results] = await db.query(sql, [classId]);
     res.json(results);
-  });
+  } catch (err) {
+    console.error("Class marks error:", err);
+    return res.status(500).json({ error: "Database error" });
+  }
 });
 
 module.exports = router;

@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-
 const app = express();
 
 app.use(cors({
@@ -12,18 +11,31 @@ app.use(express.json());
 
 // ================= ROUTES =================
 
-// Admin routes
+// 1. Admin Auth
 const adminAuthRoutes = require("./routes/adminAuth");
 app.use("/api/admin", adminAuthRoutes);
 
-// Student / Class routes
-const classAuthRoutes = require("./routes/auth");   // 👈 IMPORTANT
+// 2. Admin Marks
+const adminMarksRoutes = require("./routes/adminMarks");
+app.use("/api/admin", adminMarksRoutes); 
+
+// 3. Admin Classes (Make sure you created the file above!)
+const adminClassRoutes = require("./routes/adminClasses");
+app.use("/api/admin/classes", adminClassRoutes);
+
+// 4. Student Auth
+const classAuthRoutes = require("./routes/auth");
 app.use("/api/class", classAuthRoutes);
 
-// Health check
-app.get("/", (req, res) => {
-  res.send("Backend running");
-});
+// 5. Student Marks
+const classMarksRoutes = require("./routes/classMarks");
+app.use("/api/class", classMarksRoutes);
+
+// 6. Enquiries
+const enquiryRoutes = require("./routes/adminEnquiries"); 
+app.use("/api/enquiry", enquiryRoutes);                   
+
+app.get("/", (req, res) => res.send("Backend running"));
 
 const PORT = 5000;
 app.listen(PORT, () => {

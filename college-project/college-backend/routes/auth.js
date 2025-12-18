@@ -1,44 +1,39 @@
 const express = require("express");
+const router = express.Router();
+const db = require("../database/db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const pool = require("../database/db");
 
-const router = express.Router();
+// 🟢 FIXED SECRET KEY (Must match middleware!)
+const JWT_SECRET = "acumen_secret_key_999"; 
 
 router.post("/login", async (req, res) => {
   console.log("➡️ STUDENT LOGIN HIT");
-
   const { class_code, password } = req.body;
 
   try {
-    const [rows] = await pool.query(
-      "SELECT * FROM classes WHERE login_id = ?",
-      [class_code]
-    );
-
+    const [rows] = await db.query("SELECT * FROM classes WHERE login_id = ?", [class_code]);
     console.log("STUDENT QUERY RESULT:", rows.length);
 
-    if (rows.length === 0) {
-      return res.status(401).json({ message: "Invalid class code" });
-    }
+    if (rows.length === 0) return res.status(404).json({ message: "Class ID not found" });
 
-    const match = await bcrypt.compare(password, rows[0].password_hash);
+    const classData = rows[0];
+    const match = await bcrypt.compare(password, classData.password_hash);
     console.log("STUDENT PASSWORD MATCH:", match);
 
-    if (!match) {
-      return res.status(401).json({ message: "Invalid password" });
-    }
+    if (!match) return res.status(401).json({ message: "Invalid Password" });
 
+    // Generate Token using the FIXED key
     const token = jwt.sign(
-      { classId: rows[0].id },
-      "secret123",
-      { expiresIn: "2h" }
+      { classId: classData.id, loginId: classData.login_id },
+      JWT_SECRET,
+      { expiresIn: "24h" }
     );
 
-    res.json({ token });
+    res.json({ token, message: "Login Successful" });
   } catch (err) {
-    console.error("❌ STUDENT LOGIN ERROR:", err);
-    res.status(500).json({ message: "Server error" });
+    console.error(err);
+    res.status(500).json({ message: "Server Error" });
   }
 });
 
