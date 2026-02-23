@@ -1,5 +1,7 @@
 # 🎓 College Management System
 
+🌐 **Live Demo:** [acumenjuniorcollege.vercel.app](https://acumenjuniorcollege.vercel.app/)
+
 A full-stack college management web application with a **public website**, **student portal**, and **admin dashboard**. Built with **React** on the frontend and **Express.js + MySQL** on the backend.
 
 ---
