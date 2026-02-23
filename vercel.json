@@ -1,0 +1,19 @@
+{
+    "buildCommand": "cd college-project/college-frontend && npm install && npm run build",
+    "outputDirectory": "college-project/college-frontend/dist",
+    "framework": "vite",
+    "routes": [
+        {
+            "src": "/assets/(.*)",
+            "dest": "/assets/$1"
+        },
+        {
+            "src": "/(.*\\.(js|css|ico|png|jpg|jpeg|svg|gif|webp|woff|woff2|ttf|eot))",
+            "dest": "/$1"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/index.html"
+        }
+    ]
+}
